@@ -1,0 +1,133 @@
+Design a Parking lot
+
+Driver can
+1. enter the parking lot and take a ticket 
+2. park the car in the available lot fitting the car size
+3. drive the car out of the lot 
+4. insert ticket, make the payment and take the exit
+
+-------------------------------------------------------
+Class: Driver
+Data: driverId, car, creditCard, ticket
+
+Behaviour: takeTicket() {
+    this.ticket = ParkingLotService.getTicket();
+}
+
+Behaviour: parkCar() {
+    Lot availableLot = ParkingLotService.getAvailableLot(car.carSize);
+    if (availableLot == null) {
+        throw new Exception("No available lot");
+    }
+    // park car into the available lot
+    availableLot.setCar(car);
+    car.setLot(availableLot);
+}
+
+Behaviour: leaveLot() {
+    Lot lot = car.getLot();
+    car.resetLot();
+    lot.resetCar();
+}
+
+Behaviour: makePayment() {
+	double parkingFee = ParkingLotService.insertTicket(this.ticket);
+    ParkingLotService.payParkingFee(parkingFee, this.creditCard);
+}
+
+----------------------------------------------------------
+Class: Car
+Data: carId, carSize, lot
+
+Behaviour: setLot(lot) {
+    // where this car parks
+    this.lot = lot;
+}
+
+Behaviour: resetLot() {
+    this.lot = null;
+}
+
+Behaviour: getLot() {
+    return lot;
+}
+
+-----------------------------------------------------------
+Class: Ticket
+Data: ticketId, startingDate
+
+Behaviour: setStartingDate(startingDate) {
+    this.startingDate = startingDate;
+}
+
+-----------------------------------------------------------
+Class: Lot
+Data: size, car
+
+Behaviour: isAvailable() {
+    // is available if there is no car
+    // is not available if there is a car
+    return car == null;
+}
+
+Behaviour: setCar(car) {
+    this.car = car;
+}
+
+Behaviour: resetCar() {
+    this.car = null;
+}
+
+-----------------------------------------------------------
+Class: ParkingLotService
+Data: parkingLotId, lots, price
+
+Behaviour: getTicket() {
+    Ticket newTicket = new Ticket();
+    Date now = new Date();
+    newTicket.setStartingDate(now);
+    return newTicket;
+}
+
+Behaviour: getAvailableLot(carsize) {
+    for (Lot lot : lots) {
+        if (lot.size >= carsize && lot.isAvailable() == true) {
+            return lot;
+        }
+    }
+    return null;
+}
+
+Behaviour: insertTicket(ticket) {
+    Date current = new Date();
+    int hours = Date.hourDiff(current, ticket.startingDate);
+    double fee = this.price * hours;
+    return fee;
+}
+
+Behaviour: payParkingFee(parkingFee, creditCard) {
+     creditCard.pay(parkingFee);   
+}
+
+------------------------------------------------------------
+Class: CreditCard
+Data: bankName, type, cardNumber, securityCode, expireDate, availableLimit
+
+Behaviour: pay(amount) {
+    if (amount > availableLimit) {
+        throw new Exception("out of credit limit"); 
+    }
+    Date now = new Date();
+    if (now.isAfter(expireDate)) {
+        throw new Exception("credit card expired!");
+    }
+
+    this.availableLimit = this.availableLimit - amount;        
+}
+
+
+
+
+
+
+
