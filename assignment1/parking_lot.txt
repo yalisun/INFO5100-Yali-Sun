@@ -20,14 +20,11 @@ Behaviour: parkCar() {
         throw new Exception("No available lot");
     }
     // park car into the available lot
-    availableLot.setCar(car);
     car.setLot(availableLot);
 }
 
 Behaviour: leaveLot() {
-    Lot lot = car.getLot();
     car.resetLot();
-    lot.resetCar();
 }
 
 Behaviour: makePayment() {
@@ -42,14 +39,16 @@ Data: carId, carSize, lot
 Behaviour: setLot(lot) {
     // where this car parks
     this.lot = lot;
+    lot.setCar(car);
 }
 
 Behaviour: resetLot() {
+    this.lot.resetCar();
     this.lot = null;
 }
 
 Behaviour: getLot() {
-    return lot;
+    return this.lot;
 }
 
 -----------------------------------------------------------
@@ -71,6 +70,7 @@ Behaviour: isAvailable() {
 }
 
 Behaviour: setCar(car) {
+    // car parks at current lot
     this.car = car;
 }
 
@@ -121,6 +121,6 @@ Behaviour: pay(amount) {
     if (now.isAfter(expireDate)) {
         throw new Exception("credit card expired!");
     }
+
     this.availableLimit = this.availableLimit - amount;        
 }
-
