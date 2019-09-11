@@ -125,9 +125,3 @@ Behaviour: pay(amount) {
     this.availableLimit = this.availableLimit - amount;        
 }
 
-
-
-
-
-
-
