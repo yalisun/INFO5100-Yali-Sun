@@ -31,7 +31,7 @@ Behaviour: leaveLot() {
 }
 
 Behaviour: makePayment() {
-	double parkingFee = ParkingLotService.insertTicket(this.ticket);
+    double parkingFee = ParkingLotService.insertTicket(this.ticket);
     ParkingLotService.payParkingFee(parkingFee, this.creditCard);
 }
 
@@ -106,7 +106,7 @@ Behaviour: insertTicket(ticket) {
 }
 
 Behaviour: payParkingFee(parkingFee, creditCard) {
-     creditCard.pay(parkingFee);   
+    creditCard.pay(parkingFee);   
 }
 
 ------------------------------------------------------------
@@ -121,7 +121,6 @@ Behaviour: pay(amount) {
     if (now.isAfter(expireDate)) {
         throw new Exception("credit card expired!");
     }
-
     this.availableLimit = this.availableLimit - amount;        
 }
 
