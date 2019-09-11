@@ -1,1 +1,1 @@
-# INFO5100-Yali-Sun
+# INFO5100-YaliSun
