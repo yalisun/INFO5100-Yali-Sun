@@ -69,7 +69,7 @@ Behavior: turnRight() {
      if (signal == RED) {
         // stop the car behind the junction line
         while (TrafficControllerSystem.getSignal(currentRoad) == RED
-            || currentRoad.rightRoad.hasCar) {
+            && currentRoad.rightRoad.hasCar) {
             wait(1 second);
         }
      }
