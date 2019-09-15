@@ -1,0 +1,151 @@
+Design a Course Registration Platform
+
+Student can:
+1. login course registration platform
+2. search courses based on parameters (semester, location, etc)
+3. register a course
+4. drop a course
+5. add to waiting list
+6. remove from waiting list
+7. view registered courses
+
+----------------------------------------------------------------------------------
+Class: Student
+Date: studentId, registeredCourses, waitingListCourses, totalCredit
+
+Behavior: loginSystem(currentStudentId) {
+    CourseRegistrationPlatform.login(currentStudentId)
+}
+
+Behavior: searchCourses(searchParams) {
+    List<Course> courses = CourseRegistrationPlatform.search(searchParams);
+    // display courses to student
+    return courses
+}
+
+Behavior: registerCourse(courseId) {
+    CourseRegistrationPlatform.registerCourse(studentId, courseId);
+}
+
+Behavior: dropCourse(courseId) {
+    CourseRegistrationPlatform.dropCourse(studentId, courseId);
+}
+
+Behavior: addToWaitingList(courseId) {
+    CourseRegistrationPlatform.addToWaitingList(studentId, courseId);
+}
+
+Behavior: removeFromWaitingList(courseId) {
+    CourseRegistrationPlatform.removeFromWaitingList(studentId, courseId);
+}
+
+Behavior: viewRegisteredCourses() {
+    for (Course course : registeredCourses) {
+        System.out.print(course);
+    }
+}
+
+----------------------------------------------------------------------------------
+Class: CourseRegistrationPlatform
+Date: currentStudentIdSet, courses, semester
+
+Behavior: login(studentId) {
+    List<int> studentIdList;
+    for(int currentStudentId in currentStudentIdSet) {
+        if (currentStudentId == studentId) {
+            status = true;
+        } else {
+            status = false;
+        }
+    }
+}
+
+Behavior: search(searchParams) {
+    //fetch all courses in List<Course> courses
+    List<Course> availableCourses
+    List<Course> courses
+
+    for (int i = 0; i < courses.length(); i++) {
+        //check if courses is available for specific semester and location
+        Boolean isAvailable = true;
+        while (searchParams.courses != null) {
+            if (!courses.get(i).checkAvailability(course) {
+                isAvailable = false;
+                break;
+            } else {
+                isAvailable = true;
+            }
+        }
+        if (isAvailable && courses.get(i).location.contains(searchParams.location)) {
+            availableCourses.add(courses.get(i));
+        }
+    }
+    return availableCourses;
+}    
+
+Behavior: registerCourse(studentId, courseId) {
+    Course course = courses.getByScanning(courseId);
+    course.register(studentId);
+
+    Student student = currentStudentIdSet.getByScaning(studentId);
+    student.registeredCourses.add(course);
+    student.waitingListCourses.remove(course);
+    student.totalCredit += course.credit;
+}
+
+Behavior: dropCourse(studentId, courseId) {
+    Course course = courses.getByScanning(courseId);
+    course.drop(studentId);
+
+    Student student = currentStudentIdSet.getByScaning(studentId);
+    student.registeredCourses.remove(course);
+    student.totalCredit -= course.credit;
+}
+
+Behavior: addToWaitingList(studentId, courseId) {
+    Course course = courses.getByScanning(courseId);
+    course.addToWaitingList(studentId);
+
+    Student student = currentStudentIdSet.getByScaning(studentId);
+    student.waitingListCourses.add(course);
+}
+
+Behavior: removeFromWaitingList(studentId, courseId) {
+    Course course = courses.getByScanning(courseId);
+    course.removeFromWaitingList(studentId);
+
+    Student student = currentStudentIdSet.getByScaning(studentId);
+    student.waitingListCourses.remove(course);
+}
+    
+----------------------------------------------------------------------------------
+Class: Course
+Date: courseId, courseName, courseDescription, classRoom, courseDate, credit, enrolledStudentSet, waitingList, courseLimit
+
+Behavior: checkAvailability() {
+    // available if enrolled student number is less than course limit
+    return enrolledStudentSet.size() < courseLimit;
+}
+
+Behavior: register(studentId) {
+    if (checkAvailability()) {
+        enrolledStudentSet.insert(studentId);
+    }
+    throw new exception("Course is full!");
+}
+
+Behavior: drop(studentId) {
+    enrolledStudentSet.remove(studentId);
+    if (waitingList.isNotEmpty()) {
+        int waitingListStudentId = waitingList.getAndRemoveFirst();
+        CourseRegistrationPlatform.registerCourse(waitingListStudentId, courseId);
+    }
+}
+
+Behavior: addToWaitingList(studentId) {
+    waitingList.add(studentId);
+}
+
+Behavior: removeFromWaitingList(studentId) {
+    waitingList.remove(studentId);
+}

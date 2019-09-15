@@ -1,0 +1,84 @@
+Design a vending Machine 
+(will accept coins of different denominations and vends out candies, soda etc)
+
+User can
+1. select product (candies, soda etc)
+2. insert coins of different denominations
+3. get the selected product when the cost is paid off
+4. cancel the order
+
+-----------------------------------------------------------------------------------
+
+Class: User
+Date: userId, coins, bills, creditCard
+
+Behavior: selectProduct(productId) {
+    VendingMachine.selectProduct(productId);
+}
+
+Behavior: insertCoin(coin) {
+    coins.remove(coin);
+    VendingMachine.insertCoin(coin);
+}
+
+Behavior: takeProduct() {
+    if (VendingMachine.vendingOut != null) {
+        // take it :)
+        coins.addAdd(VendingMachine.vendingOut.coinChange)
+        VendingMachine.resetVendingOut();
+    }
+}
+
+Behavior: cancelOrder() {
+    List<Coin> coinChange = VendingMachine.cancel();
+    coins.addAdd(coinChange)
+}
+
+----------------------------------------------------------------------------------
+
+Class: VendingMachine
+Date: availableProducts, selectedProduct, insertedAmount, coins, vendingOut
+
+Behavior: selectProduct(productId) {
+    Product product = availableProducts.get(productId);
+    this.selectedProduct = product;
+}
+
+Behavior: insertCoin(coin) {
+    coins.add(coin);
+
+    insertedAmout = insertedAmout + coin.amount;
+    if (insertedAmout >= selectedProduct.price) {
+        // calculate coin change, and vend out product
+        List<Coin> change = coins.getCoinsForAmout(selectedProduct.price - insertedAmout);
+        vendingOut = this.selectedProduct and change;
+
+        // reset everything
+        availableProducts.remove(selectedProduct);
+        insertedAmout = 0;
+        selectedProduct = null;
+
+        System.out.print(vendingOut);
+    }
+}
+
+Behavior: resetVendingOut() {
+    this.vendingOut = null;
+}
+
+Behavior: cancelOrder() {
+    this.selectedProduct = null;
+    // calculate coin change
+    List<Coin> insertedCoins = coins.getCoinsForAmout(insertedAmount);
+    this.insertedAmount = 0;
+    return insertedCoins;
+}
+
+----------------------------------------------------------------------------------
+Class: Product
+Date: productId, name, price
+
+----------------------------------------------------------------------------------
+Class: Coin
+Date: amount
+

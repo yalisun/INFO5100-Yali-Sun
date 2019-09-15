@@ -1,0 +1,116 @@
+Design a Traffic Controller System for a Junction
+
+Driver can:
+1. drive the car to go straight
+2. drive the car to turn left at junction
+3. drive the car to turn right at junction
+4. stop the car behind the junction line
+
+----------------------------------------------------------------------------------
+Class: Driver
+Date: driverId, currentRoad
+
+Behavior: goStraight() {
+     SignalState signal = TrafficControllerSystem.getSignal(currentRoad);
+     if (signal == YELLOW) {
+        boolean shouldStop = true; // driver makes decision
+        if (shouldStop) {
+            // slow down and stop
+            // signal will update
+            signal = TrafficControllerSystem.getSignal(currentRoad);
+        }
+     }
+     if (signal == RED) {
+        // stop the car behind the junction line
+        while (TrafficControllerSystem.getSignal(currentRoad) == RED) {
+            wait(1 second);
+        }
+     }
+     // pass the junction.
+}
+
+Behavior: turnLeft() {
+    SignalState signal = TrafficControllerSystem.getSignal(currentRoad);
+
+    if (signal == YELLOW) {
+        boolean shouldStop = true; // driver makes decision
+        if (shouldStop) {
+            // slow down and stop
+            // signal will update
+            signal = TrafficControllerSystem.getSignal(currentRoad);
+        }
+     }
+     if (signal == RED) {
+        // stop the car behind the junction line
+        while (TrafficControllerSystem.getSignal(currentRoad) == RED) {
+            wait(1 second);
+        }
+     }
+
+    while (currentRoad.oppositeRoad.hasCar) {
+        // yield the car on the opposite side
+        wait(1 second);
+    }
+
+    // turn left
+}
+
+Behavior: turnRight() {
+    SignalState signal = TrafficControllerSystem.getSignal(currentRoad);
+
+    if (signal == YELLOW) {
+        boolean shouldStop = true; // driver makes decision
+        if (shouldStop) {
+            // slow down and stop
+            // signal will update
+            signal = TrafficControllerSystem.getSignal(currentRoad);
+        }
+     }
+     if (signal == RED) {
+        // stop the car behind the junction line
+        while (TrafficControllerSystem.getSignal(currentRoad) == RED
+            || currentRoad.rightRoad.hasCar) {
+            wait(1 second);
+        }
+     }
+
+     // turn right
+}
+
+----------------------------------------------------------------------------------
+
+Class: Road
+
+Date: roadId, direction, oppositeRoad, leftRoad, rightRoad, hasCar
+
+----------------------------------------------------------------------------------
+Class: TrafficSignal
+Date: signalId, hasDirection, signalState, roadId, greenDuration, yellowDuration, redDuration
+
+Behavior: turnOn() {
+    while (true) {
+        signalState = GREEN;
+        wait(greenDuration);
+        signalState = YELLOW;
+        wait(yellowDuration);
+        signalState = RED;
+        wait(redDuration);
+    }
+}
+
+----------------------------------------------------------------------------------
+
+Class: TrafficControllerSystem
+Date: trafficSignals, predefindedSginalSchedule
+
+Behavior: turnOn() {
+    for (TrafficSignal trafficSinal : trafficSignals) {
+        trafficSinal.turnOn();
+    }
+}
+
+Behavior: getSignal(roadId) {
+    // trafficSignals is indexed by roadId
+    TrafficSignal trafficSignal = trafficSignals.getByRoadId(roadId);
+    return trafficSignal.signalState;
+}

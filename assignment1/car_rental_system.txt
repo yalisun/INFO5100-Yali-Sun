@@ -1,0 +1,153 @@
+Design a Car Rental System
+
+User can
+1. login car rental system
+2. search cars based on parameters (carModel, price, location, date, etc)
+3. create an order booking a car
+4. make the payment for an order
+5. cancel the order
+6. review order
+
+-----------------------------------------------------------
+Class: User
+Date: userId, email, name, userId, phone, userLocation, order, creditCard
+
+Behavior: loginSystem() {
+    CarRentalSystem.login(email);
+}
+
+Behavior: searchCars(SearchParams) {
+    List<Car> cars = CarRentalSystem.search(searchParams);
+    // return to display cars to user
+    return cars;
+}
+
+Behavior: bookCar() {
+    this.order = CarRentalSystem.bookCar(carId, StartDate, EndDate);
+}
+
+Behavior: makePayment() {
+    CarRentalSystem.makePayment(this.order, this.creditCard);
+}
+
+Behavior: cancelOrder() {
+    CarRentalSystem.cancelBooking(order);
+}
+
+Behavior: reviewOrder() {
+    System.out.print(this.order);
+}
+
+---------------------------------------------------------------------------------
+Class: CarRentalSystem
+Data: registeredEmailSet, cars
+
+Behavior: login(userEmail) {
+    for each(String email in registeredEmailSet) {
+        if (userEmail == email) {
+            status = true;
+        } else {
+            status = false;
+        }
+    }
+}
+
+Behavior: search(searchParams) {
+    //fetch all cars in List<Car> cars
+    List<Car> availableCars
+    for (Car car in cars) {
+        //check if car is available for specific dates
+        Boolean isAvailable = car.checkAvailability(searchParams.startDate, searchParams.EndDate);
+        if (isAvailable 
+                && car.location == searchParams.location
+                && car.price <= searchParams.maxPrice
+                && car.price >= searchParams.minPrice
+                && car.model == searchParams.carModel) {
+            availableCars.add(car);
+        }
+    }
+    return availableCars;
+}
+
+Behavior: bookCar(carId, startDate, endDate) {
+    //fetch car object using carId
+    Car car = cars.getUsingId(carId);
+    car.book(startDate, endDate);
+
+    Order order = new Order();
+    order.carId = carId;
+    order.startDate = startDate;
+    order.endDate = endDate;
+    order.status = UNPAID;
+}
+
+Behavior: makePayment(order, creditCard) {
+    if (order.status == UNPAID) {
+        creditCard.pay(order.totalCost);
+        order.creditCard = creditCard;
+        order.status = PAID;
+    }
+}
+
+Behavior: cancelBooking(order) {
+    if (order.status == PAID) {
+        // refund
+        CreditCard creditCard = order.creditCard;
+        int refundAmout = order.totalCost;
+        creditCard.initiateRefund(refundAmout);
+
+        // release lock for car on booking dates
+        Car car = order.car;
+        car.cancelBooking(order.startDate, order.endDate);
+    }
+    order.status = CANCELLED;
+}
+
+---------------------------------------------------------------------------------
+Class: Car
+Date: carId, model, price, color, size, bookedDates
+
+Behavior: checkAvailability(startDate, endDate) {
+    // check availability on specific date
+    // if bookedDates contains a date between specific dates, it is not available
+    return !bookedDates.containsBetween(startDate, endDate);
+}
+
+Behavior: book(startDate, endDate) {
+    if (checkAvailability(startDate, endDate)) {
+        throw new Exception("car is not available between the specified days."):
+    }
+    bookedDates.addBetween(startDate, endDate);
+}
+
+Behavior: cancelBooking(startDate, endDate) {
+    bookedDates.removeBetween(startDate, endDate);
+}
+
+---------------------------------------------------------------------------------
+Class: Order
+Date:  orderId, userId, carId, startDate, endDate, totalCost, creditCard, status
+
+Behavior: setCreditCard(creditCard) {
+    this.creditCard = creditCard
+}
+
+---------------------------------------------------------------------------------
+Class: CreditCard
+Data: bankName, type, cardNumber, securityCode, expireDate, availableLimit
+
+Behavior: pay(amount) {
+    if (amount > availableLimit) {
+        throw new Exception("out of credit limit"); 
+    }
+    Date now = new Date();
+    if (now.isAfter(expireDate)) {
+        throw new Exception("credit card expired!");
+    }
+
+    this.availableLimit = this.availableLimit - amount;        
+}
+
+Behavior: initiateRefund(amount) {
+    this.availableLimit = this.availableLimit + amount;        
+}
