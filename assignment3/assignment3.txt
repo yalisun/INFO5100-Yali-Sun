@@ -460,12 +460,16 @@ Output: "1211"
 +++++++++++++++++++++++++++++++++++++++++
 Answer:
 
-  public String countAndSay(int n) {
-        String value = "1";
-        for (int i = 1; i < n; i++) {
-            value = countAndSay(value);
+    public int groupsOfStudents(int[] studentIds) {
+        int count = 0;
+        for (int i = 0; i < studentIds.length - 1; i++) {
+            for (int j = i + 1; j < studentIds.length; j++) {
+                if (isEven(studentIds[j] + studentIds[i])) {
+                    count++;
+                }
+            }
         }
-        return value;
+        return count;
     }
 
     private String countAndSay(String input) {
@@ -547,7 +551,7 @@ Output: [1,2,3,4,8,12,11,10,9,5,6,7]
 Answer:
 
     public int[] spiralOrder(int[][] matrix) {
-        int[] newOrder = new int[];
+        int[] newOrder = new int[256];
         if (matrix.length == 0) return newOrder;
 
         int m = matrix.length;
@@ -556,39 +560,29 @@ Answer:
         int y = 0;
         int index = 0;
 
-        while (m > 0 && n > 0) {
-            if (m == 1) {
-                for (int i = 0; i < n; i++) {
-                    newOrder[index++] = matrix[x][y++];
-                }
-                break;
-            } else if (n == 1) {
-                for (int i = 0; i < m; i++) {
-                    newOrder[index++] = matrix[x++][y];
-                }
-                break;
+        while (x < m && y < n) {
+            for (int i = y; i < n; ++i) {
+                newOrder[index++] = matrix[x][i];
             }
-
-            for (int i = 0; i < m - 1; i++) {
-                newOrder[index++] = matrix[x++][y];
-            }
-
-            for (int i = 0; i < n - 1; i++) {
-                newOrder[index++] = matrix[x][y++];
-            }
-
-            for (int i = 0; i < m - 1; i++) {
-                newOrder[index++] = matrix[x--][y];
-            }
-
-            for (int i = 0; i < n - 1; i++) {
-                newOrder[index++] = matrix[x][y--];
-            }
-
-            m = m - 2;
-            n = n - 2;
             x++;
-            y++;
+
+            for (int i = x; i < m; ++i) {
+                newOrder[index++] = matrix[i][n - 1];
+            }
+            n--;
+
+            if (x < m) {
+                for (int i = n - 1; i >= y; --i) {
+                    newOrder[index++] = matrix[m - 1][i];
+                }
+                m--;
+            }
+            if (y < n) {
+                for (int i = m - 1; i >= x; --i) {
+                    newOrder[index++] = matrix[i][y];
+                }
+                y++;
+            }
         }
         return newOrder;
     }
@@ -625,13 +619,11 @@ Answer:
         }
 
         StringBuilder[] result = new StringBuilder[nRows];
-
         for(int i = 0; i < result.length; i++) {
             result[i] = new StringBuilder();
         }
 
         int new_str = nRows * 2 - 2;
-
         for(int i = 0; i < s.length(); i++) {
             int group = i % new_str;
 
