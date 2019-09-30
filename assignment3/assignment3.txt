@@ -334,7 +334,14 @@ public class Course {
         if (maxCapacity < 10 || maxCapacity > 100) {
             throw new RuntimeException("minimum length 10 and maximum 100");
         }
+        if (maxCapacity < size) {
+            throw new RuntimeException("current capacity is already lager than new maxCapacity");
+        }
+
         this.maxCapacity = maxCapacity;
+        int[] tmp = getStudentIds();
+        this.studentIds = new int[maxCapacity]; // create new array using new maxCapacity
+        setStudentIds(tmp); // copy ids to new array
     }
 
     public int getProfessorId() {
@@ -506,7 +513,8 @@ Answer:
             while (start >= 0 && s.charAt(start) != ' ') {
                 start--;
             }
-            result.append(s.substring(start + 1, end + 1)).append(" ");
+            String word = s.substring(start + 1, end + 1);
+            result.append(word).append(" ");
         }
         return result.toString().trim();
     }
@@ -612,24 +620,25 @@ P     I
 Answer:
 
     public String convert(String s, int nRows) {
-        if(nRows>=s.length()||nRows<=1) return s;
+        if(nRows >= s.length() || nRows <= 1) {
+            return s;
+        }
 
         StringBuilder[] result = new StringBuilder[nRows];
 
-        for(int i = 0; i < result.length; i++){
+        for(int i = 0; i < result.length; i++) {
             result[i] = new StringBuilder();
         }
 
         int new_str = nRows * 2 - 2;
 
-        for(int i = 0; i < s.length(); i++){
+        for(int i = 0; i < s.length(); i++) {
             int group = i % new_str;
 
-            if(group < nRows){
+            if(group < nRows) {
                 result[group].append(s.charAt(i));
-            }
-            else{
-                result[new_str-group].append(s.charAt(i));
+            } else {
+                result[new_str - group].append(s.charAt(i));
             }
         }
 
