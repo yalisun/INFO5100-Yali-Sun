@@ -561,24 +561,24 @@ Answer:
         int index = 0;
 
         while (x < m && y < n) {
-            for (int i = y; i < n; ++i) {
+            for (int i = y; i < n; i++) {
                 newOrder[index++] = matrix[x][i];
             }
             x++;
 
-            for (int i = x; i < m; ++i) {
+            for (int i = x; i < m; i++) {
                 newOrder[index++] = matrix[i][n - 1];
             }
             n--;
 
             if (x < m) {
-                for (int i = n - 1; i >= y; --i) {
+                for (int i = n - 1; i >= y; i--) {
                     newOrder[index++] = matrix[m - 1][i];
                 }
                 m--;
             }
             if (y < n) {
-                for (int i = m - 1; i >= x; --i) {
+                for (int i = m - 1; i >= x; i--) {
                     newOrder[index++] = matrix[i][y];
                 }
                 y++;
