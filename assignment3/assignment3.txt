@@ -1,0 +1,655 @@
+Note:
+1.Complete All Questions
+2.Deadline : 30th September 2019, 12:00 pm
+
+Q1. Write a Java class named 'Course'
+It should have following members
+courseId
+courseName
+maxCapacity
+professorId
+credits
+int[] studentIds
+
+Function: registerStudent(int studentId)
+
+There should be 3 ways to create Course Object (Hint : Use Constructor)
+courseId
+courseId, professorId
+courseId, professorId, credits
+
+Class should provide getters/setters for all members
+registerStudent method should store all ids in studentIds array.
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Answer:
+
+public class Course {
+    private int courseId;
+    private String courseName;
+    private int maxCapacity;
+    private int professorId;
+    private int credits;
+    private int[] studentIds;
+    private int size;
+
+    public Course(int courseId) {
+        setCourseId(courseId);
+        setMaxCapacity(100); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public Course(int courseId, int professorId) {
+        setCourseId(courseId);
+        setProfessorId(professorId);
+        setMaxCapacity(100); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public Course(int courseId, int professorId, int credits) {
+        setCourseId(courseId);
+        setProfessorId(professorId);
+        setCredits(credits);
+        setMaxCapacity(100); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public boolean registerStudent(int studentId) {
+        if (size == maxCapacity) {
+            // this course is full
+            return false;
+        }
+        studentIds[size] = studentId;
+        size++;
+        return true;
+    }
+
+    public int getCourseId() {
+        return this.courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getCourseName() {
+        return this.courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public int getMaxCapacity() {
+        return this.maxCapacity;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+
+    public int getProfessorId() {
+        return this.professorId;
+    }
+
+    public void setProfessorId(int professorId) {
+        this.professorId = professorId;
+    }
+
+    public int getCredits() {
+        return this.credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public int[] getStudentIds() {
+        return this.studentIds;
+    }
+
+    public void setStudentIds(int[] studentIds) {
+        this.studentIds = studentIds;
+    }
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Q2. In the above example, add following validations to setters/constructors
+courseId - should not be negative or 0
+courseName- should be a string with minimum length 10 and maximum 60
+maxCapacity - should not be less than 10 greater than 100
+professorId - should be a six digit integer
+credits - should be a single digit but greater than 0
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Answer:
+
+public class Course {
+    private int courseId;
+    private String courseName;
+    private int maxCapacity;
+    private int professorId;
+    private int credits;
+    private int[] studentIds;
+    private int size;
+
+    public Course(int courseId) {
+        setCourseId(courseId);
+        setMaxCapacity(100); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public Course(int courseId, int professorId) {
+        setCourseId(courseId);
+        setProfessorId(professorId);
+        setMaxCapacity(100); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public Course(int courseId, int professorId, int credits) {
+        setCourseId(courseId);
+        setProfessorId(professorId);
+        setCredits(credits);
+        setMaxCapacity(100); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public boolean registerStudent(int studentId) {
+        if (size == maxCapacity) {
+            // this course is full
+            return false;
+        }
+        studentIds[size] = studentId;
+        size++;
+        return true;
+    }
+
+    public int getCourseId() {
+        return this.courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        if (courseId <=0) {
+            throw new RuntimeException("should not be negative or 0");
+        }
+        this.courseId = courseId;
+    }
+
+    public String getCourseName() {
+        return this.courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        if (courseName.length() < 10 || courseName.length() > 60) {
+            throw new RuntimeException("minimum length 10 and maximum 60");
+        }
+        this.courseName = courseName;
+    }
+
+    public int getMaxCapacity() {
+        return this.maxCapacity;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        if (maxCapacity < 10 || maxCapacity > 100) {
+            throw new RuntimeException("minimum length 10 and maximum 100");
+        }
+        this.maxCapacity = maxCapacity;
+    }
+
+    public int getProfessorId() {
+        return this.professorId;
+    }
+
+    public void setProfessorId(int professorId) {
+        String idInString = String.valueOf(professorId);
+        if (idInString.length() != 6) {
+            throw new RuntimeException("should be a six digit integer");
+        }
+        this.professorId = professorId;
+    }
+
+    public int getCredits() {
+        return this.credits;
+    }
+
+    public void setCredits(int credits) {
+        String creditInString = String.valueOf(credits);
+        if (creditInString.length() == 1 && credits <= 0) {
+            throw new RuntimeException("should be a single digit but greater than 0");
+        }
+        this.credits = credits;
+    }
+
+    public int[] getStudentIds() {
+        return this.studentIds;
+    }
+
+    public void setStudentIds(int[] studentIds) {
+        this.studentIds = studentIds;
+    }
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Q3. Add a function called removeDuplicates in Course class
+This function should be called if course has reached the maximum capacity and
+remove all duplicate student Ids and return the new ids
+
+Ex: Input :[1,6,2,3,2,4,5,6]
+Output: [1,6,2,3,4,5]
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Answer:
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Course {
+    private int courseId;
+    private String courseName;
+    private int maxCapacity;
+    private int professorId;
+    private int credits;
+    private int[] studentIds;
+    private int size;
+
+    public Course(int courseId) {
+        setCourseId(courseId);
+        setMaxCapacity(60); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public Course(int courseId, int professorId) {
+        setCourseId(courseId);
+        setProfessorId(professorId);
+        setMaxCapacity(60); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public Course(int courseId, int professorId, int credits) {
+        setCourseId(courseId);
+        setProfessorId(professorId);
+        setCredits(credits);
+        setMaxCapacity(60); // default course capacity;
+        this.studentIds = new int[maxCapacity];
+        this.size = 0;
+    }
+
+    public void registerStudent(int studentId) {
+        if (size == maxCapacity) {
+            // this course is full
+            int[] noDuplicates = removeDuplicates(getStudentIds());
+            
+            size = noDuplicates.length;
+            setStudentIds(noDuplicates);
+        }
+        if (size == maxCapacity) {
+            throw new RuntimeException("course is full");
+        }
+        studentIds[size] = studentId;
+        size++;
+    }
+
+    public int getCourseId() {
+        return this.courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        if (courseId <=0) {
+            throw new RuntimeException("should not be negative or 0");
+        }
+        this.courseId = courseId;
+    }
+
+    public String getCourseName() {
+        return this.courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        if (courseName.length() < 10 || courseName.length() > 60) {
+            throw new RuntimeException("minimum length 10 and maximum 60");
+        }
+        this.courseName = courseName;
+    }
+
+    public int getMaxCapacity() {
+        return this.maxCapacity;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        if (maxCapacity < 10 || maxCapacity > 100) {
+            throw new RuntimeException("minimum length 10 and maximum 100");
+        }
+        this.maxCapacity = maxCapacity;
+    }
+
+    public int getProfessorId() {
+        return this.professorId;
+    }
+
+    public void setProfessorId(int professorId) {
+        String idInString = String.valueOf(professorId);
+        if (idInString.length() != 6) {
+            throw new RuntimeException("should be a six digit integer");
+        }
+        this.professorId = professorId;
+    }
+
+    public int getCredits() {
+        return this.credits;
+    }
+
+    public void setCredits(int credits) {
+        String creditInString = String.valueOf(credits);
+        if (creditInString.length() == 1 && credits <= 0) {
+            throw new RuntimeException("should be a single digit but greater than 0");
+        }
+        this.credits = credits;
+    }
+
+    public int[] getStudentIds() {
+        return this.studentIds;
+    }
+
+    public void setStudentIds(int[] studentIds) {
+        for (int i = 0; i < this.studentIds.length && i < studentIds.length; i++) {
+            this.studentIds[i] = studentIds[i];
+        }
+    }
+
+    public int[] removeDuplicates(int[] studentIds) {
+        Set<Integer> set = new HashSet<>();
+        for (int i : studentIds) {
+            set.add(i);
+        }
+        int[] newStudentIds = new int[set.size()];
+        int index = 0;
+        for (int i : set) {
+            newStudentIds[index] = i;
+            index++;
+        }
+        return newStudentIds;
+    }
+
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Q4. Implement the following method in Course class.
+
+public int groupsOfStudents(int[] studentIds) {
+
+}
+
+The above method takes an array of studentIds as an argument. Find number of pairs of studentsIds whose sum is even
+Example:
+Input : [1,2,3,4,5,6]
+Output : 6
+Explanation: (1 + 3), (1 + 5), (3 + 5), (2 + 4), (2 + 6), (4 + 6)
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Answer:
+
+public class Course {
+
+    public int groupsOfStudents(int[] studentIds) {
+        int count = 0;
+        for (int i = 0; i < studentIds.length - 1; i++) {
+            for (int j = i + 1; j < studentIds.length; j++) {
+                if (isEven(studentIds[j] + studentIds[i])) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private boolean isEven(int n) {
+        return (n % 2) == 0;
+    }
+
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Q5.
+The count-and-say sequence is a sequence of integers with the first five terms as following:
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+
+1 is read off as "one 1" or 11.
+11 is read off as "two 1s" or 21.
+21 is read off as "one 2, then one 1" or 1211.
+Given an integer n where 1 ≤ n ≤ 30, generate the nth term of the count-and-say sequence.
+Note: Each term of the sequence of integers will be represented as a string.
+
+Example 1:
+Input: 1
+Output: "1"
+
+Example 2:
+Input: 4
+Output: "1211"
+
++++++++++++++++++++++++++++++++++++++++++
+Answer:
+
+  public String countAndSay(int n) {
+        String value = "1";
+        for (int i = 1; i < n; i++) {
+            value = countAndSay(value);
+        }
+        return value;
+    }
+
+    private String countAndSay(String input) {
+        char previous = input.charAt(0);
+        int count = 1;
+
+        StringBuilder sb = new StringBuilder();
+        for(int i=1; i < input.length(); i++) {
+            if (input.charAt(i) != input.charAt(i - 1)) {
+                sb.append(count);
+                sb.append(previous);
+
+                previous = input.charAt(i);
+                count = 1;
+            } else {
+                count++;
+            }
+        }
+        sb.append(count);
+        sb.append(previous);
+        return sb.toString();
+    }
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Q6. Given an input string , reverse the string word by word.
+Example:
+Input : “the sky is blue”
+Output : “blue is sky the”
+Assumptions:
+A word is defined as a sequence of non-space characters.
+The input string does not contain leading or trailing spaces.
+The words are always separated by a single space.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Answer:
+
+    public String reverseString(String s) {
+        StringBuilder result = new StringBuilder();
+        for (int start = s.length() - 1; start >= 0; start--) {
+            if (s.charAt(start) == ' ') {
+                continue;
+            }
+            int end = start;
+            while (start >= 0 && s.charAt(start) != ' ') {
+                start--;
+            }
+            result.append(s.substring(start + 1, end + 1)).append(" ");
+        }
+        return result.toString().trim();
+    }
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+Q7.
+Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
+Example 1:
+Input:
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+Output: [1,2,3,6,9,8,7,4,5]
+
+Example 2:
+Input:
+[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9,10,11,12]
+]
+Output: [1,2,3,4,8,12,11,10,9,5,6,7]
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Answer:
+
+    public int[] spiralOrder(int[][] matrix) {
+        int[] newOrder = new int[];
+        if (matrix.length == 0) return newOrder;
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int x = 0;
+        int y = 0;
+        int index = 0;
+
+        while (m > 0 && n > 0) {
+            if (m == 1) {
+                for (int i = 0; i < n; i++) {
+                    newOrder[index++] = matrix[x][y++];
+                }
+                break;
+            } else if (n == 1) {
+                for (int i = 0; i < m; i++) {
+                    newOrder[index++] = matrix[x++][y];
+                }
+                break;
+            }
+
+            for (int i = 0; i < m - 1; i++) {
+                newOrder[index++] = matrix[x++][y];
+            }
+
+            for (int i = 0; i < n - 1; i++) {
+                newOrder[index++] = matrix[x][y++];
+            }
+
+            for (int i = 0; i < m - 1; i++) {
+                newOrder[index++] = matrix[x--][y];
+            }
+
+            for (int i = 0; i < n - 1; i++) {
+                newOrder[index++] = matrix[x][y--];
+            }
+
+            m = m - 2;
+            n = n - 2;
+            x++;
+            y++;
+        }
+        return newOrder;
+    }
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Q8.
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this
+P   A   H   N
+A P L S I I G
+Y   I   R
+And then read line by line: "PAHNAPLSIIGYIR"
+Write the code that will take a string and make this conversion given a number of rows:
+String convert(string s, int numRows);
+Example 1:
+Input: s = "PAYPALISHIRING", numRows = 3
+Output: "PAHNAPLSIIGYIR"
+
+Example 2:
+Input: s = "PAYPALISHIRING", numRows = 4
+Output: "PINALSIGYAHRPI"
+Explanation:
+
+P     I    N
+A   L S  I G
+Y A   H R
+P     I
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Answer:
+
+    public String convert(String s, int nRows) {
+        if(nRows>=s.length()||nRows<=1) return s;
+
+        StringBuilder[] result = new StringBuilder[nRows];
+
+        for(int i = 0; i < result.length; i++){
+            result[i] = new StringBuilder();
+        }
+
+        int new_str = nRows * 2 - 2;
+
+        for(int i = 0; i < s.length(); i++){
+            int group = i % new_str;
+
+            if(group < nRows){
+                result[group].append(s.charAt(i));
+            }
+            else{
+                result[new_str-group].append(s.charAt(i));
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < nRows; i++){
+            sb.append(result[i].toString());
+        }
+        return sb.toString();
+    }
+-----------------------------------------------------------------------------------------------------------------------
+
+Q9. Explain Encapsulation with an example. (Write at least 30-40 words).
+
+Answer:
+
+Encapsulation is hiding the internal implementation details (code and data) into a single unit with access restriction to the data inside. The data of a class is hidden from any other class and can be accessed only through any member function of its own class. For example, driving a car. We don't know how the car internally works (gas/fuel, engine, transmission), but we just need to step on the gas and we can drive the car. We can't see how much gas is left (data hidden) but we can know it from the car's dashboard (getter function).
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Q10. What is the difference between Encapsulation and Abstraction
+
+Abstraction solves the problem in the design level while Encapsulation solves the problem in the implementation level. Abstraction is providing a generalization, which represents the essential features (what it does) without unwanted details, while Encapsulation is hiding the code and data into a single unit to protect the data and hide how it does something.
