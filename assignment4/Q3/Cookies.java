@@ -12,11 +12,11 @@ public class Cookies extends DessertItem{
 
 	@Override
 	public int getCost() {
-		return (int) Math.round(number * price / 12);
+		return (int) Math.round(number * price / 12D);
 	}
 
 	@Override
 	public String getQuantity() {
-		return this.number + " @ " + this.price + " /dz.";
+		return number + " @ " + DessertShop.cents2dollarsAndCentsmethod(price) + " /dz.\n";
 	}
 }

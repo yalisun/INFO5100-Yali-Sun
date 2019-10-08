@@ -17,6 +17,6 @@ class Candy extends DessertItem {
 
 	@Override
 	public String getQuantity() {
-		return weight + " lbs. @ " + DessertShop.cents2dollarsAndCentsmethod(price) + " /lb.\n";
+		return String.format("%.2f lbs. @ %s /lb.\n", weight, DessertShop.cents2dollarsAndCentsmethod(price));
 	}
 }

@@ -45,17 +45,20 @@ public class Checkout {
 		sb.append(NEW_LINE);
 		for (DessertItem item: dessertItem) {
 			sb.append(item.getQuantity());
-			sb.append(String.format("%-10s %10s",
+			sb.append(String.format("%-25s %8s",
 					item.getName(),
 					DessertShop.cents2dollarsAndCentsmethod(item.getCost())));
 			sb.append(NEW_LINE);
 		}
-		sb.append("Tax        ");
-		int tax = totalTax();
-		sb.append(DessertShop.cents2dollarsAndCentsmethod(tax));
 		sb.append(NEW_LINE);
-		sb.append("Total Cost        ");
-		sb.append(DessertShop.cents2dollarsAndCentsmethod(tax + totalCost()));
+		int tax = totalTax();
+		sb.append(String.format("%-25s %8s",
+				"Tax",
+				DessertShop.cents2dollarsAndCentsmethod(tax)));
+		sb.append(NEW_LINE);
+		sb.append(String.format("%-25s %8s",
+				"Total Cost",
+				DessertShop.cents2dollarsAndCentsmethod(tax + totalCost())));
 		sb.append(NEW_LINE);
 		return sb.toString();
 	}
