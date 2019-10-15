@@ -1,0 +1,10 @@
+Q1:
+Explain the difference between final and finally in Java 8.
+
+Answer:
+Final is a reserved keyword in Java 8 and we cannot use it as an identifier.
+* First, If we declare any variable as final, we cannot modify its contents.
+* Second, when we declare any class in final, it cannot be subclassed. it means that we cannot extend that class or that class cannot be extended.
+* Third, when we declare any method as final, it means that we cannot override that method.
+Finally is also a reserved keyword in Java 8 and we cannot use it as an identifier.
+* But the finally keyword is used in association with a try/catch block and guarantees that a section of code will be executed, even if an exception is thrown.

@@ -1,0 +1,14 @@
+Result is 6.
+
+1. B b = new B(); -> new B class with supper A class;
+2. List<Object> list = Arrays.asList(1,2,3);
+3. b.addAll(list) -> 1)list.size = 3;
+                     2)and then goes into B class addAll function: addCount = initial zero + size of list = 3;
+                     3)goes into super/A class addAll function
+                     4)inside A class addAll function, it goes through collection/list input, and call add function
+                     5)goes into B class add function as it overrides super/class A, addCount++, addCount = 4;
+                     6)repeatedly for each element in list input, addCount = 6;
+4.System.out.println(b.getAddCount()+b.getI()) -> 1) b.getAddCount() = 6
+                                                  2) b.getI() function from super/class A.
+                                                  3) in class A, getI() returns its private variable 0.
+                                                  4) so total is 6.
