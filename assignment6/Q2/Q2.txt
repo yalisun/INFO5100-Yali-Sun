@@ -1,0 +1,9 @@
+Q: Write two differences between ArrayList and LinkedList.
+
+1. ArrayList is implemented using dynamic array, which may need resizing with O(n).
+While LinkedList is implemented using doubly linked node, which does not need resizing.
+
+2. Access in ArrayList costs O(1), but insertion and removal cost O(n) as it needs to rearrange all elements.
+While LinkedList access needs to iterate over costing O(n), but insertion and removal only cost O(1) when the element is found.
+
+
