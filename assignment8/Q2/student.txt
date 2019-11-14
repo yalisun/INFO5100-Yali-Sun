@@ -2,3 +2,5 @@
 2|Bob|Male|20
 3|Helen|Female|12
 4|John|Male|22
+5|ABC|Male|12
+6|cd|Male|127|Ada|28|Female

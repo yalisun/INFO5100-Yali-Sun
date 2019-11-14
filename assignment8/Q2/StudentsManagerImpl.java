@@ -19,7 +19,7 @@ public class StudentsManagerImpl extends Component {
 
     public void readFile() throws FileNotFoundException {
         File f = new File(filePath);
-        if (f.exists() == false) {
+        if (!f.exists()) {
             return;
         }
         FileInputStream fs = new FileInputStream(f);
@@ -39,22 +39,16 @@ public class StudentsManagerImpl extends Component {
         if (stu == null) {
             studentMap.put(student.getId(), student);
         } else {
-            throw new RuntimeException("Student " + student.getName() + " is already added!");
+            throw new RuntimeException("Student id " + student.getId() + " is already added!");
         }
     }
 
-    public void addStudent(Student student) throws RuntimeException, IOException {
-        String id = student.getId();
-        Student stu = studentMap.get(id);
-        if (stu == null) {
-            studentMap.put(student.getId(), student);
-        } else {
-            throw new RuntimeException("Student " + student.getName() + " is already added!");
-        }
+    public void addStudent(Student student) throws RuntimeException {
+        addStudentIntoMap(student);
         writeFile(student);
     }
 
-    private void writeFile(Student student) throws IOException {
+    private void writeFile(Student student) {
         try {
             FileOutputStream file = new FileOutputStream(filePath, true);
             PrintStream ps = new PrintStream(file);
@@ -69,7 +63,7 @@ public class StudentsManagerImpl extends Component {
     }
 
     public ArrayList<Student> getStudents() {
-        return new ArrayList<Student>(studentMap.values());
+        return new ArrayList<>(studentMap.values());
     }
 
     public void display() {

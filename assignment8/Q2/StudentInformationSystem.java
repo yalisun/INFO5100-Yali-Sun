@@ -1,7 +1,6 @@
 package assignment8.Q2;
 
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,8 +23,8 @@ public class StudentInformationSystem extends BaseFrame {
         createPanel(con);
     }
 
-    private JPanel createPanel(Container con) {
-        JPanel p = new JPanel(new GridLayout(5, 1));
+    private void createPanel(Container con) {
+        JPanel p = new JPanel(new GridLayout(5, 2));
         //row1
         p.add(idLabel);
         p.add(idField);
@@ -39,28 +38,15 @@ public class StudentInformationSystem extends BaseFrame {
         p.add(genderLabel);
         p.add(genderBox);
         //row5
+        p.add(new JLabel());
         p.add(addButton);
 
         con.add(p, BorderLayout.NORTH);
-        return p;
-    }
-
-    private void gridConstrains(JPanel info, Component com, int row, int col, int width, int height,
-                                int xstren, int ystren) {
-        GridBagConstraints constrains = new GridBagConstraints();
-        constrains.gridx = col;
-        constrains.gridy = row;
-        constrains.gridwidth = width;
-        constrains.gridheight = height;
-        constrains.weightx = xstren;
-        constrains.weighty = ystren;
-        info.add(com, constrains);
     }
 
     @Override
     public void addListeners() {
         addButton.addActionListener((e) -> addButtonAction());
-
     }
 
     private void addButtonAction() {
@@ -68,10 +54,12 @@ public class StudentInformationSystem extends BaseFrame {
         String name = nameField.getText();
         String age = ageField.getText();
         String gender = genderBox.getSelectedItem().toString();
+        JFrame frame = new JFrame();
         try {
             studentsManager.addStudent(new Student(id, name, age, gender));
-        } catch (IllegalArgumentException | IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(frame, String.format("Successfully added new student with id %s", id));
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage());
         }
         studentsTable.revalidate();
     }

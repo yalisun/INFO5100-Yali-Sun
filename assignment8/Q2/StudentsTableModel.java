@@ -49,7 +49,7 @@ public class StudentsTableModel implements TableModel {
 
     @Override
     public Object getValueAt(int i, int i1) {
-        Student student = (Student) studentsManager.getStudents().get(i);
+        Student student = studentsManager.getStudents().get(i);
         switch (i1) {
             case 0:
                 return student.getId();
