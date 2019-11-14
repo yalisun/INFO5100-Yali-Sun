@@ -1,0 +1,4 @@
+1|Anna|Female|20
+2|Bob|Male|20
+3|Helen|Female|12
+4|John|Male|22
